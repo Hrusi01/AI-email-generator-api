@@ -41,9 +41,36 @@ Sometimes I get stuck trying to figure out what to say in an email, and remember
 - Add some limits so nobody spams my API and uses up my AI credits.
 - Save the emails securely so it's safer.
 
-Thanks for checking out my project! 😊 I learned a lot about APIs, databases, and prompting AI while making it.
+Thanks for checking out my project!  I learned a lot about APIs, databases, and prompting AI while making it.
 
-## 🐳 Bonus: How to run it with Docker!
+##  High-Level Architecture
+
+```mermaid
+flowchart TD
+
+    A[Client Frontend] -->|POST API threads| B[NextJS API Route]
+
+    B --> C[Zod Validation]
+
+    C -->|Invalid| D[400 Bad Request]
+    D --> A
+
+    C -->|Valid| E[Thread Service]
+
+    E --> F[Google Gemini API]
+    F -->|Email JSON| E
+
+    E --> G[MongoDB]
+    G -->|Saved| E
+
+    E --> H[Email Response]
+
+    H --> B
+    B -->|201 Created| A
+```
+
+
+## How to run it with Docker!
 If you know how to use Docker, I also made it ready for containers!
 1. Build the image:
    ```bash
